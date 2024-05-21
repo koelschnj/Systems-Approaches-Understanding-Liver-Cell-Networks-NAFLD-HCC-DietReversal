@@ -1,0 +1,2 @@
+# Systems-Approaches-Understanding-Liver-Cell-Networks-NAFLD-HCC-DietReversal
+snRNA-seq data from various male mice on standard diet, western diet with NAFLD, HCC, and those that underwent diet reversal that developed HCC or were saved from it were studied through systems biology perspectives to understand the complex and dynamic networks of immune and non-immune cells interacting in the liver microenvironment
