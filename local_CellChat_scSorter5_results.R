@@ -253,6 +253,15 @@ StackedVlnPlot(HCCp1.cells, features = c("Cd19", "Cd22", "Cd79a", "Cd79b", "Ebf1
 ##########################################################################################################################################################################
 ##try to look at specific pathway expression of components in each group like MHCI/II
 ##because MHC-I and MHC-II are not detected even at 5%, need to manually plot expression across groups for all genes in non-cellchat processed data
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
+table(HCCp1.cells@meta.data$new.group)
+
+CD <- subset(HCCp1.cells, idents = "CD", invert = FALSE)
+WD.nf <- subset(HCCp1.cells, idents = "WD.nf", invert = FALSE)
+MWD.T <- subset(HCCp1.cells, idents = "WD.t", invert = FALSE)
+MRD.T <- subset(HCCp1.cells, idents = "RD.t", invert = FALSE)
+MRD.NT <- subset(HCCp1.cells, idents = "RD.n", invert = FALSE)
+
 all.genes <- rownames(CD)
 CD <- ScaleData(CD, features = all.genes)
 all.genes <- rownames(WD.nf)
@@ -264,11 +273,17 @@ MRD.T <- ScaleData(MRD.T, features = all.genes)
 all.genes <- rownames(MRD.NT)
 MRD.NT <- ScaleData(MRD.NT, features = all.genes)
 
-Idents(CD) <- CD@meta.data$Select.subsets
-Idents(WD.nf) <- WD.nf@meta.data$Select.subsets
-Idents(MWD.T) <- MWD.T@meta.data$Select.subsets
-Idents(MRD.T) <- MRD.T@meta.data$Select.subsets
-Idents(MRD.NT) <- MRD.NT@meta.data$Select.subsets
+#!Idents(CD) <- CD@meta.data$Select.subsets
+#!Idents(WD.nf) <- WD.nf@meta.data$Select.subsets
+#!Idents(MWD.T) <- MWD.T@meta.data$Select.subsets
+#!Idents(MRD.T) <- MRD.T@meta.data$Select.subsets
+#!Idents(MRD.NT) <- MRD.NT@meta.data$Select.subsets
+
+Idents(CD) <- CD@meta.data$Abbreviated
+Idents(WD.nf) <- WD.nf@meta.data$Abbreviated
+Idents(MWD.T) <- MWD.T@meta.data$Abbreviated
+Idents(MRD.T) <- MRD.T@meta.data$Abbreviated
+Idents(MRD.NT) <- MRD.NT@meta.data$Abbreviated
 
 ##MHC-I ligands
 StackedVlnPlot(CD, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T3", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"), group.by = "Select.subsets", color.use = new.colors)
@@ -276,6 +291,451 @@ StackedVlnPlot(WD.nf, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", 
 StackedVlnPlot(MWD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T3", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"), group.by = "Select.subsets", color.use = new.colors)
 StackedVlnPlot(MRD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T3", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"), group.by = "Select.subsets", color.use = new.colors)
 StackedVlnPlot(MRD.NT, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T3", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"), group.by = "Select.subsets", color.use = new.colors)
+
+##MHC-I ligands in structural cells
+StackedVlnPlot(CD, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+               idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(WD.nf, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+               idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MWD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+               idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MRD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+               idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MRD.NT, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+               idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+
+DotPlot(CD, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+DotPlot(WD.nf, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+DotPlot(MWD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+DotPlot(MRD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+DotPlot(MRD.NT, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+
+##Fas receptor in structural cells
+StackedVlnPlot(CD, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(WD.nf, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MWD.T, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MRD.T, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MRD.NT, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
+
+DotPlot(CD, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+DotPlot(WD.nf, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+DotPlot(MWD.T, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+DotPlot(MRD.T, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+DotPlot(MRD.NT, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+
+##FasL on T/NKT/NK cells
+StackedVlnPlot(CD, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(WD.nf, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MWD.T, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MRD.T, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", color.use = new.colors)
+StackedVlnPlot(MRD.NT, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", color.use = new.colors)
+
+DotPlot(CD, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+DotPlot(WD.nf, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+DotPlot(MWD.T, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+DotPlot(MRD.T, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+DotPlot(MRD.NT, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+
+##identify number of cells in each population and the average expression of these molecules in each population and gene+ populations
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
+
+Endo <- subset(HCCp1.cells, idents = "Endo", invert = FALSE)
+LSEC <- subset(HCCp1.cells, idents = "LSEC", invert = FALSE)
+Stromal <- subset(HCCp1.cells, idents = "Stromal", invert = FALSE)
+HSC <- subset(HCCp1.cells, idents = "HSC", invert = FALSE)
+Fibro <- subset(HCCp1.cells, idents = "Fibro", invert = FALSE)
+MF <- subset(HCCp1.cells, idents = "Myofibro", invert = FALSE)
+Cholangio <- subset(HCCp1.cells, idents = "Cholangio", invert = FALSE)
+Hep <- subset(HCCp1.cells, idents = "Hep", invert = FALSE)
+Cancer <- subset(HCCp1.cells, idents = "Cancer", invert = FALSE)
+
+Endo.H2K1 <- subset(Endo, subset = `H2-K1` > 0)
+table(Endo.H2K1@meta.data$replicate)
+LSEC.H2K1 <- subset(LSEC, subset = `H2-K1` > 0)
+table(LSEC.H2K1@meta.data$replicate)
+Stromal.H2K1 <- subset(Stromal, subset = `H2-K1` > 0)
+table(Stromal.H2K1@meta.data$replicate)
+HSC.H2K1 <- subset(HSC, subset = `H2-K1` > 0)
+table(HSC.H2K1@meta.data$replicate)
+Fibro.H2K1 <- subset(Fibro, subset = `H2-K1` > 0)
+table(Fibro.H2K1@meta.data$replicate)
+MF.H2K1 <- subset(MF, subset = `H2-K1` > 0)
+table(MF.H2K1@meta.data$replicate)
+Cholangio.H2K1 <- subset(Cholangio, subset = `H2-K1` > 0)
+table(Cholangio.H2K1@meta.data$replicate)
+Hep.H2K1 <- subset(Hep, subset = `H2-K1` > 0)
+table(Hep.H2K1@meta.data$replicate)
+Cancer.H2K1 <- subset(Cancer, subset = `H2-K1` > 0)
+table(Cancer.H2K1@meta.data$replicate)
+
+Endo.H2D1 <- subset(Endo, subset = `H2-D1` > 0)
+table(Endo.H2D1@meta.data$replicate)
+LSEC.H2D1 <- subset(LSEC, subset = `H2-D1` > 0)
+table(LSEC.H2D1@meta.data$replicate)
+Stromal.H2D1 <- subset(Stromal, subset = `H2-D1` > 0)
+table(Stromal.H2D1@meta.data$replicate)
+HSC.H2D1 <- subset(HSC, subset = `H2-D1` > 0)
+table(HSC.H2D1@meta.data$replicate)
+Fibro.H2D1 <- subset(Fibro, subset = `H2-D1` > 0)
+table(Fibro.H2D1@meta.data$replicate)
+MF.H2D1 <- subset(MF, subset = `H2-D1` > 0)
+table(MF.H2D1@meta.data$replicate)
+Cholangio.H2D1 <- subset(Cholangio, subset = `H2-D1` > 0)
+table(Cholangio.H2D1@meta.data$replicate)
+Hep.H2D1 <- subset(Hep, subset = `H2-D1` > 0)
+table(Hep.H2D1@meta.data$replicate)
+Cancer.H2D1 <- subset(Cancer, subset = `H2-D1` > 0)
+table(Cancer.H2D1@meta.data$replicate)
+
+Endo.H2Q4 <- subset(Endo, subset = `H2-Q4` > 0)
+table(Endo.H2Q4@meta.data$replicate)
+LSEC.H2Q4 <- subset(LSEC, subset = `H2-Q4` > 0)
+table(LSEC.H2Q4@meta.data$replicate)
+Stromal.H2Q4 <- subset(Stromal, subset = `H2-Q4` > 0)
+table(Stromal.H2Q4@meta.data$replicate)
+HSC.H2Q4 <- subset(HSC, subset = `H2-Q4` > 0)
+table(HSC.H2Q4@meta.data$replicate)
+Fibro.H2Q4 <- subset(Fibro, subset = `H2-Q4` > 0)
+table(Fibro.H2Q4@meta.data$replicate)
+MF.H2Q4 <- subset(MF, subset = `H2-Q4` > 0)
+table(MF.H2Q4@meta.data$replicate)
+Cholangio.H2Q4 <- subset(Cholangio, subset = `H2-Q4` > 0)
+table(Cholangio.H2Q4@meta.data$replicate)
+Hep.H2Q4 <- subset(Hep, subset = `H2-Q4` > 0)
+table(Hep.H2Q4@meta.data$replicate)
+Cancer.H2Q4 <- subset(Cancer, subset = `H2-Q4` > 0)
+table(Cancer.H2Q4@meta.data$replicate)
+
+Endo.H2Q6 <- subset(Endo, subset = `H2-Q6` > 0)
+table(Endo.H2Q6@meta.data$replicate)
+LSEC.H2Q6 <- subset(LSEC, subset = `H2-Q6` > 0)
+table(LSEC.H2Q6@meta.data$replicate)
+Stromal.H2Q6 <- subset(Stromal, subset = `H2-Q6` > 0)
+table(Stromal.H2Q6@meta.data$replicate)
+HSC.H2Q6 <- subset(HSC, subset = `H2-Q6` > 0)
+table(HSC.H2Q6@meta.data$replicate)
+Fibro.H2Q6 <- subset(Fibro, subset = `H2-Q6` > 0)
+table(Fibro.H2Q6@meta.data$replicate)
+MF.H2Q6 <- subset(MF, subset = `H2-Q6` > 0)
+table(MF.H2Q6@meta.data$replicate)
+Cholangio.H2Q6 <- subset(Cholangio, subset = `H2-Q6` > 0)
+table(Cholangio.H2Q6@meta.data$replicate)
+Hep.H2Q6 <- subset(Hep, subset = `H2-Q6` > 0)
+table(Hep.H2Q6@meta.data$replicate)
+Cancer.H2Q6 <- subset(Cancer, subset = `H2-Q6` > 0)
+table(Cancer.H2Q6@meta.data$replicate)
+
+Endo.H2Q10 <- subset(Endo, subset = `H2-Q10` > 0)
+table(Endo.H2Q10@meta.data$replicate)
+LSEC.H2Q10 <- subset(LSEC, subset = `H2-Q10` > 0)
+table(LSEC.H2Q10@meta.data$replicate)
+Stromal.H2Q10 <- subset(Stromal, subset = `H2-Q10` > 0)
+table(Stromal.H2Q10@meta.data$replicate)
+HSC.H2Q10 <- subset(HSC, subset = `H2-Q10` > 0)
+table(HSC.H2Q10@meta.data$replicate)
+Fibro.H2Q10 <- subset(Fibro, subset = `H2-Q10` > 0)
+table(Fibro.H2Q10@meta.data$replicate)
+MF.H2Q10 <- subset(MF, subset = `H2-Q10` > 0)
+table(MF.H2Q10@meta.data$replicate)
+Cholangio.H2Q10 <- subset(Cholangio, subset = `H2-Q10` > 0)
+table(Cholangio.H2Q10@meta.data$replicate)
+Hep.H2Q10 <- subset(Hep, subset = `H2-Q10` > 0)
+table(Hep.H2Q10@meta.data$replicate)
+Cancer.H2Q10 <- subset(Cancer, subset = `H2-Q10` > 0)
+table(Cancer.H2Q10@meta.data$replicate)
+
+Endo.H2T23 <- subset(Endo, subset = `H2-T23` > 0)
+table(Endo.H2T23@meta.data$replicate)
+LSEC.H2T23 <- subset(LSEC, subset = `H2-T23` > 0)
+table(LSEC.H2T23@meta.data$replicate)
+Stromal.H2T23 <- subset(Stromal, subset = `H2-T23` > 0)
+table(Stromal.H2T23@meta.data$replicate)
+HSC.H2T23 <- subset(HSC, subset = `H2-T23` > 0)
+table(HSC.H2T23@meta.data$replicate)
+Fibro.H2T23 <- subset(Fibro, subset = `H2-T23` > 0)
+table(Fibro.H2T23@meta.data$replicate)
+MF.H2T23 <- subset(MF, subset = `H2-T23` > 0)
+table(MF.H2T23@meta.data$replicate)
+Cholangio.H2T23 <- subset(Cholangio, subset = `H2-T23` > 0)
+table(Cholangio.H2T23@meta.data$replicate)
+Hep.H2T23 <- subset(Hep, subset = `H2-T23` > 0)
+table(Hep.H2T23@meta.data$replicate)
+Cancer.H2T23 <- subset(Cancer, subset = `H2-T23` > 0)
+table(Cancer.H2T23@meta.data$replicate)
+
+AverageExpression(Endo, features = "H2-K1", group.by = "replicate")
+AverageExpression(Endo, features = "H2-D1", group.by = "replicate")
+AverageExpression(Endo, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Endo, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Endo, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Endo, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(LSEC, features = "H2-K1", group.by = "replicate")
+AverageExpression(LSEC, features = "H2-D1", group.by = "replicate")
+AverageExpression(LSEC, features = "H2-Q4", group.by = "replicate")
+AverageExpression(LSEC, features = "H2-Q6", group.by = "replicate")
+AverageExpression(LSEC, features = "H2-Q10", group.by = "replicate")
+AverageExpression(LSEC, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(Stromal, features = "H2-K1", group.by = "replicate")
+AverageExpression(Stromal, features = "H2-D1", group.by = "replicate")
+AverageExpression(Stromal, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Stromal, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Stromal, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Stromal, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(HSC, features = "H2-K1", group.by = "replicate")
+AverageExpression(HSC, features = "H2-D1", group.by = "replicate")
+AverageExpression(HSC, features = "H2-Q4", group.by = "replicate")
+AverageExpression(HSC, features = "H2-Q6", group.by = "replicate")
+AverageExpression(HSC, features = "H2-Q10", group.by = "replicate")
+AverageExpression(HSC, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(Fibro, features = "H2-K1", group.by = "replicate")
+AverageExpression(Fibro, features = "H2-D1", group.by = "replicate")
+AverageExpression(Fibro, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Fibro, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Fibro, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Fibro, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(MF, features = "H2-K1", group.by = "replicate")
+AverageExpression(MF, features = "H2-D1", group.by = "replicate")
+AverageExpression(MF, features = "H2-Q4", group.by = "replicate")
+AverageExpression(MF, features = "H2-Q6", group.by = "replicate")
+AverageExpression(MF, features = "H2-Q10", group.by = "replicate")
+AverageExpression(MF, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(Cholangio, features = "H2-K1", group.by = "replicate")
+AverageExpression(Cholangio, features = "H2-D1", group.by = "replicate")
+AverageExpression(Cholangio, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Cholangio, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Cholangio, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Cholangio, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(Hep, features = "H2-K1", group.by = "replicate")
+AverageExpression(Hep, features = "H2-D1", group.by = "replicate")
+AverageExpression(Hep, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Hep, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Hep, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Hep, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(Cancer, features = "H2-K1", group.by = "replicate")
+AverageExpression(Cancer, features = "H2-D1", group.by = "replicate")
+AverageExpression(Cancer, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Cancer, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Cancer, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Cancer, features = "H2-T23", group.by = "replicate")
+
+AverageExpression(Endo.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(LSEC.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(Stromal.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(HSC.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(Fibro.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(MF.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(Cholangio.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(Hep.H2K1, features = "H2-K1", group.by = "replicate")
+AverageExpression(Cancer.H2K1, features = "H2-K1", group.by = "replicate")
+
+AverageExpression(Endo.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(LSEC.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(Stromal.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(HSC.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(Fibro.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(MF.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(Cholangio.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(Hep.H2D1, features = "H2-D1", group.by = "replicate")
+AverageExpression(Cancer.H2D1, features = "H2-D1", group.by = "replicate")
+
+AverageExpression(Endo.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(LSEC.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Stromal.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(HSC.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Fibro.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(MF.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Cholangio.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Hep.H2Q4, features = "H2-Q4", group.by = "replicate")
+AverageExpression(Cancer.H2Q4, features = "H2-Q4", group.by = "replicate")
+
+AverageExpression(Endo.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(LSEC.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Stromal.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(HSC.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Fibro.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(MF.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Cholangio.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Hep.H2Q6, features = "H2-Q6", group.by = "replicate")
+AverageExpression(Cancer.H2Q6, features = "H2-Q6", group.by = "replicate")
+
+AverageExpression(Endo.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(LSEC.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Stromal.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(HSC.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Fibro.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(MF.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Cholangio.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Hep.H2Q10, features = "H2-Q10", group.by = "replicate")
+AverageExpression(Cancer.H2Q10, features = "H2-Q10", group.by = "replicate")
+
+AverageExpression(Endo.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(LSEC.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(Stromal.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(HSC.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(Fibro.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(MF.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(Cholangio.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(Hep.H2T23, features = "H2-T23", group.by = "replicate")
+AverageExpression(Cancer.H2T23, features = "H2-T23", group.by = "replicate")
+
+##identifying number of cells expressing Fas (structural) and FasL (T/NKT/NK)
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
+
+Endo <- subset(HCCp1.cells, idents = "Endo", invert = FALSE)
+LSEC <- subset(HCCp1.cells, idents = "LSEC", invert = FALSE)
+Stromal <- subset(HCCp1.cells, idents = "Stromal", invert = FALSE)
+HSC <- subset(HCCp1.cells, idents = "HSC", invert = FALSE)
+Fibro <- subset(HCCp1.cells, idents = "Fibro", invert = FALSE)
+MF <- subset(HCCp1.cells, idents = "Myofibro", invert = FALSE)
+Cholangio <- subset(HCCp1.cells, idents = "Cholangio", invert = FALSE)
+Hep <- subset(HCCp1.cells, idents = "Hep", invert = FALSE)
+Cancer <- subset(HCCp1.cells, idents = "Cancer", invert = FALSE)
+
+Tcell <- subset(HCCp1.cells, idents = "Tcell", invert = FALSE)
+NKT <- subset(HCCp1.cells, idents = "NKT", invert = FALSE)
+NK <- subset(HCCp1.cells, idents = "NK", invert = FALSE)
+
+AverageExpression(Endo, features = "Fas", group.by = "replicate")
+AverageExpression(LSEC, features = "Fas", group.by = "replicate")
+AverageExpression(Stromal, features = "Fas", group.by = "replicate")
+AverageExpression(HSC, features = "Fas", group.by = "replicate")
+AverageExpression(Fibro, features = "Fas", group.by = "replicate")
+AverageExpression(MF, features = "Fas", group.by = "replicate")
+AverageExpression(Cholangio, features = "Fas", group.by = "replicate")
+AverageExpression(Hep, features = "Fas", group.by = "replicate")
+AverageExpression(Cancer, features = "Fas", group.by = "replicate")
+
+AverageExpression(Tcell, features = "Fasl", group.by = "replicate")
+AverageExpression(NKT, features = "Fasl", group.by = "replicate")
+AverageExpression(NK, features = "Fasl", group.by = "replicate")
+
+Endo.Fas <- subset(Endo, subset = Fas > 0)
+table(Endo.Fas@meta.data$replicate)
+LSEC.Fas <- subset(LSEC, subset = Fas > 0)
+table(LSEC.Fas@meta.data$replicate)
+Stromal.Fas <- subset(Stromal, subset = Fas > 0)
+table(Stromal.Fas@meta.data$replicate)
+HSC.Fas <- subset(HSC, subset = Fas > 0)
+table(HSC.Fas@meta.data$replicate)
+Fibro.Fas <- subset(Fibro, subset = Fas > 0)
+table(Fibro.Fas@meta.data$replicate)
+MF.Fas <- subset(MF, subset = Fas > 0)
+table(MF.Fas@meta.data$replicate)
+Cholangio.Fas <- subset(Cholangio, subset = Fas > 0)
+table(Cholangio.Fas@meta.data$replicate)
+Hep.Fas <- subset(Hep, subset = Fas > 0)
+table(Hep.Fas@meta.data$replicate)
+Cancer.Fas <- subset(Cancer, subset = Fas > 0)
+table(Cancer.Fas@meta.data$replicate)
+
+Tcell.FasL <- subset(Tcell, subset = Fasl > 0)
+table(Tcell.FasL@meta.data$replicate)
+NKT.FasL <- subset(NKT, subset = Fasl > 0)
+table(NKT.FasL@meta.data$replicate)
+NK.FasL <- subset(NK, subset = Fasl > 0)
+table(NK.FasL@meta.data$replicate)
+
+AverageExpression(Endo.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(LSEC.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(Stromal.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(HSC.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(Fibro.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(MF.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(Cholangio.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(Hep.Fas, features = "Fas", group.by = "replicate")
+AverageExpression(Cancer.Fas, features = "Fas", group.by = "replicate")
+
+AverageExpression(Tcell.FasL, features = "Fasl", group.by = "replicate")
+AverageExpression(NKT.FasL, features = "Fasl", group.by = "replicate")
+AverageExpression(NK.FasL, features = "Fasl", group.by = "replicate")
+
+##TRAIL and TRAIL-R expression in structural cells and T/NKT/NK populations
+##DotPlot(CD, features = c("Tnfrsf10a", "Tnfrsf10b", "Tnfrsf10c", "Tnfrsf10d"), idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+##DotPlot(WD.nf, features = c("Tnfrsf10a", "Tnfrsf10b", "Tnfrsf10c", "Tnfrsf10d"), idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+##DotPlot(MWD.T, features = c("Tnfrsf10a", "Tnfrsf10b", "Tnfrsf10c", "Tnfrsf10d"), idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+##DotPlot(MRD.T, features = c("Tnfrsf10a", "Tnfrsf10b", "Tnfrsf10c", "Tnfrsf10d"), idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+##DotPlot(MRD.NT, features = c("Tnfrsf10a", "Tnfrsf10b", "Tnfrsf10c", "Tnfrsf10d"), idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+##looks like only Tnfrsf10b is expressed in our data
+DotPlot(CD, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 6, scale.min = 0, col.min = -1.0, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.5))
+DotPlot(WD.nf, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 6, scale.min = 0, col.min = -1.0, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.5))
+DotPlot(MWD.T, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 6, scale.min = 0, col.min = -1.0, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.5))
+DotPlot(MRD.T, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 6, scale.min = 0, col.min = -1.0, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.5))
+DotPlot(MRD.NT, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 6, scale.min = 0, col.min = -1.0, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.5))
+
+DotPlot(CD, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 20, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(WD.nf, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 20, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(MWD.T, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 20, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(MRD.T, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 20, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(MRD.NT, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 20, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
+
+Endo <- subset(HCCp1.cells, idents = "Endo", invert = FALSE)
+LSEC <- subset(HCCp1.cells, idents = "LSEC", invert = FALSE)
+Stromal <- subset(HCCp1.cells, idents = "Stromal", invert = FALSE)
+HSC <- subset(HCCp1.cells, idents = "HSC", invert = FALSE)
+Fibro <- subset(HCCp1.cells, idents = "Fibro", invert = FALSE)
+MF <- subset(HCCp1.cells, idents = "Myofibro", invert = FALSE)
+Cholangio <- subset(HCCp1.cells, idents = "Cholangio", invert = FALSE)
+Hep <- subset(HCCp1.cells, idents = "Hep", invert = FALSE)
+Cancer <- subset(HCCp1.cells, idents = "Cancer", invert = FALSE)
+
+Tcell <- subset(HCCp1.cells, idents = "Tcell", invert = FALSE)
+NKT <- subset(HCCp1.cells, idents = "NKT", invert = FALSE)
+NK <- subset(HCCp1.cells, idents = "NK", invert = FALSE)
+
+Endo.TRb <- subset(Endo, subset = Tnfrsf10b > 0)
+table(Endo.TRb@meta.data$replicate)
+LSEC.TRb <- subset(LSEC, subset = Tnfrsf10b > 0)
+table(LSEC.TRb@meta.data$replicate)
+Stromal.TRb <- subset(Stromal, subset = Tnfrsf10b > 0)
+table(Stromal.TRb@meta.data$replicate)
+HSC.TRb <- subset(HSC, subset = Tnfrsf10b > 0)
+table(HSC.TRb@meta.data$replicate)
+Fibro.TRb <- subset(Fibro, subset = Tnfrsf10b > 0)
+table(Fibro.TRb@meta.data$replicate)
+MF.TRb <- subset(MF, subset = Tnfrsf10b > 0)
+table(MF.TRb@meta.data$replicate)
+Cholangio.TRb <- subset(Cholangio, subset = Tnfrsf10b > 0)
+table(Cholangio.TRb@meta.data$replicate)
+Hep.TRb <- subset(Hep, subset = Tnfrsf10b > 0)
+table(Hep.TRb@meta.data$replicate)
+Cancer.TRb <- subset(Cancer, subset = Tnfrsf10b > 0)
+table(Cancer.TRb@meta.data$replicate)
+
+Tcell.TRAIL <- subset(Tcell, subset = Tnfsf10 > 0)
+table(Tcell.TRAIL@meta.data$replicate)
+NKT.TRAIL <- subset(NKT, subset = Tnfsf10 > 0)
+table(NKT.TRAIL@meta.data$replicate)
+NK.TRAIL <- subset(NK, subset = Tnfsf10 > 0)
+table(NK.TRAIL@meta.data$replicate)
+
+AverageExpression(Endo.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(LSEC.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(Stromal.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(HSC.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(Fibro.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(MF.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(Cholangio.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(Hep.TRb, features = "Tnfrsf10b", group.by = "replicate")
+AverageExpression(Cancer.TRb, features = "Tnfrsf10b", group.by = "replicate")
+
+AverageExpression(Tcell.TRAIL, features = "Tnfsf10", group.by = "replicate")
+AverageExpression(NKT.TRAIL, features = "Tnfsf10", group.by = "replicate")
+AverageExpression(NK.TRAIL, features = "Tnfsf10", group.by = "replicate")
 
 ##MHC-I receptors
 StackedVlnPlot(CD, features = c("Klrd1", "Klrc1", "Klrc2", "Cd1d1", "Cd8a", "Cd8b1", "Kir3dl1", "Klrk1"), group.by = "Select.subsets", color.use = new.colors)
@@ -296,6 +756,32 @@ StackedVlnPlot(WD.nf, features = "Cd1d1", group.by = "Select.subsets", color.use
 StackedVlnPlot(MWD.T, features = "Cd1d1", group.by = "Select.subsets", color.use = new.colors)
 StackedVlnPlot(MRD.T, features = "Cd1d1", group.by = "Select.subsets", color.use = new.colors)
 StackedVlnPlot(MRD.NT, features = "Cd1d1", group.by = "Select.subsets", color.use = new.colors)
+
+##Ki67 expresion in dormant tumor groups
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
+
+CD.WDnf.RDn <- subset(HCCp1.cells, idents = c("CD", "WD.nf", "RD.n"), invert = FALSE)
+
+Idents(CD.WDnf.RDn) <- CD.WDnf.RDn@meta.data$Abbreviated
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
+
+DotPlot(CD.WDnf.RDn, features = "Mki67", idents = c("Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2, scale.min = 0, col.min = -1.5, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,1.5))
+DotPlot(CD.WDnf.RDn, features = "Mki67", idents = c("Hep"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2, scale.min = 0, col.min = -1.5, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,1.5))
+DotPlot(HCCp1.cells, features = "Mki67", idents = c("Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 5, scale.min = 0, col.min = -1.5, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,1.5))
+DotPlot(HCCp1.cells, features = "Mki67", idents = c("Hep"), group.by = "new.group", cols = c("blue", "red"), scale.max = 5, scale.min = 0, col.min = -1.5, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,1.5))
+
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
+
+Hep <- subset(HCCp1.cells, idents = "Hep", invert = FALSE)
+Cancer <- subset(HCCp1.cells, idents = "Cancer", invert = FALSE)
+
+Hep.Ki67 <- subset(Hep, subset = Mki67 > 0)
+table(Hep.Ki67@meta.data$replicate)
+Cancer.Ki67 <- subset(Cancer, subset = Mki67 > 0)
+table(Cancer.Ki67@meta.data$replicate)
+
+AverageExpression(Hep.Ki67, features = "Mki67", group.by = "replicate")
+AverageExpression(Cancer.Ki67, features = "Mki67", group.by = "replicate")
 
 ########################################################
 ########################################################
@@ -451,16 +937,18 @@ cellchat.MRD.NT@DB <- CellChatDB.use
 cellchat.CD <- subsetData(cellchat.CD)
 future::plan("multisession", workers = 2)
 
-cellchat.CD <- identifyOverExpressedGenes(cellchat.CD)
+#!cellchat.CD <- identifyOverExpressedGenes(cellchat.CD)
+cellchat.CD <- identifyOverExpressedGenes(cellchat.CD, thresh.pc = 0.80)
 cellchat.CD <- identifyOverExpressedInteractions(cellchat.CD)
 
 unique(cellchat.CD@idents)
 
 cellchat.CD@idents = droplevels(cellchat.CD@idents, exclude = setdiff(levels(cellchat.CD@idents),unique(cellchat.CD@idents)))
 
-cellchat.CD <- computeCommunProb(cellchat.CD)
+#!cellchat.CD <- computeCommunProb(cellchat.CD)
 #!cellchat.CD <- computeCommunProb(cellchat.CD, type = "truncatedMean", trim = 0.05)
 #!cellchat.CD <- computeCommunProb(cellchat.CD, type = "truncatedMean", trim = 0.75)
+cellchat.CD <- computeCommunProb(cellchat.CD, type = "truncatedMean", trim = 0.5)
 
 cellchat.CD <- filterCommunication(cellchat.CD, min.cells = 2)
 
@@ -560,16 +1048,18 @@ saveRDS(cellchat.CD, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koel
 cellchat.PreT <- subsetData(cellchat.PreT)
 future::plan("multisession", workers = 2)
 
-cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT)
+#!cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT)
+cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT, thresh.pc = 0.80)
 cellchat.PreT <- identifyOverExpressedInteractions(cellchat.PreT)
 
 unique(cellchat.PreT@idents)
 
 cellchat.PreT@idents = droplevels(cellchat.PreT@idents, exclude = setdiff(levels(cellchat.PreT@idents),unique(cellchat.PreT@idents)))
 
-cellchat.PreT <- computeCommunProb(cellchat.PreT)
+#!cellchat.PreT <- computeCommunProb(cellchat.PreT)
 #!cellchat.PreT <- computeCommunProb(cellchat.PreT, type = "truncatedMean", trim = 0.05)
 #!cellchat.PreT <- computeCommunProb(cellchat.PreT, type = "truncatedMean", trim = 0.75)
+cellchat.PreT <- computeCommunProb(cellchat.PreT, type = "truncatedMean", trim = 0.5)
 
 cellchat.PreT <- filterCommunication(cellchat.PreT, min.cells = 2)
 
@@ -669,16 +1159,18 @@ saveRDS(cellchat.PreT, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Ko
 cellchat.MWD.T <- subsetData(cellchat.MWD.T)
 future::plan("multisession", workers = 2)
 
-cellchat.MWD.T <- identifyOverExpressedGenes(cellchat.MWD.T)
+#!cellchat.MWD.T <- identifyOverExpressedGenes(cellchat.MWD.T)
+cellchat.MWD.T <- identifyOverExpressedGenes(cellchat.MWD.T, thresh.pc = 0.80)
 cellchat.MWD.T <- identifyOverExpressedInteractions(cellchat.MWD.T)
 
 unique(cellchat.MWD.T@idents)
 
 cellchat.MWD.T@idents = droplevels(cellchat.MWD.T@idents, exclude = setdiff(levels(cellchat.MWD.T@idents),unique(cellchat.MWD.T@idents)))
 
-cellchat.MWD.T <- computeCommunProb(cellchat.MWD.T)
+#!cellchat.MWD.T <- computeCommunProb(cellchat.MWD.T)
 #!cellchat.MWD.T <- computeCommunProb(cellchat.MWD.T, type = "truncatedMean", trim = 0.05)
 #!cellchat.MWD.T <- computeCommunProb(cellchat.MWD.T, type = "truncatedMean", trim = 0.75)
+cellchat.MWD.T <- computeCommunProb(cellchat.MWD.T, type = "truncatedMean", trim = 0.5)
 
 cellchat.MWD.T <- filterCommunication(cellchat.MWD.T, min.cells = 2)
 
@@ -777,16 +1269,18 @@ saveRDS(cellchat.MWD.T, file = "T:/Microbiology and Immunology/ManjiliLab/Nick K
 cellchat.MRD.T <- subsetData(cellchat.MRD.T)
 future::plan("multisession", workers = 2)
 
-cellchat.MRD.T <- identifyOverExpressedGenes(cellchat.MRD.T)
+#!cellchat.MRD.T <- identifyOverExpressedGenes(cellchat.MRD.T)
+cellchat.MRD.T <- identifyOverExpressedGenes(cellchat.MRD.T, thresh.pc = 0.80)
 cellchat.MRD.T <- identifyOverExpressedInteractions(cellchat.MRD.T)
 
 unique(cellchat.MRD.T@idents)
 
 cellchat.MRD.T@idents = droplevels(cellchat.MRD.T@idents, exclude = setdiff(levels(cellchat.MRD.T@idents),unique(cellchat.MRD.T@idents)))
 
-cellchat.MRD.T <- computeCommunProb(cellchat.MRD.T)
+#!cellchat.MRD.T <- computeCommunProb(cellchat.MRD.T)
 #!cellchat.MRD.T <- computeCommunProb(cellchat.MRD.T, type = "truncatedMean", trim = 0.05)
 #!cellchat.MRD.T <- computeCommunProb(cellchat.MRD.T, type = "truncatedMean", trim = 0.75)
+cellchat.MRD.T <- computeCommunProb(cellchat.MRD.T, type = "truncatedMean", trim = 0.5)
 
 cellchat.MRD.T <- filterCommunication(cellchat.MRD.T, min.cells = 2)
 
@@ -885,16 +1379,18 @@ saveRDS(cellchat.MRD.T, file = "T:/Microbiology and Immunology/ManjiliLab/Nick K
 cellchat.MRD.NT <- subsetData(cellchat.MRD.NT)
 future::plan("multisession", workers = 2)
 
-cellchat.MRD.NT <- identifyOverExpressedGenes(cellchat.MRD.NT)
+#!cellchat.MRD.NT <- identifyOverExpressedGenes(cellchat.MRD.NT)
+cellchat.MRD.NT <- identifyOverExpressedGenes(cellchat.MRD.NT, thresh.pc = 0.80)
 cellchat.MRD.NT <- identifyOverExpressedInteractions(cellchat.MRD.NT)
 
 unique(cellchat.MRD.NT@idents)
 
 cellchat.MRD.NT@idents = droplevels(cellchat.MRD.NT@idents, exclude = setdiff(levels(cellchat.MRD.NT@idents),unique(cellchat.MRD.NT@idents)))
 
-cellchat.MRD.NT <- computeCommunProb(cellchat.MRD.NT)
+#!cellchat.MRD.NT <- computeCommunProb(cellchat.MRD.NT)
 #!cellchat.MRD.NT <- computeCommunProb(cellchat.MRD.NT, type = "truncatedMean", trim = 0.05)
 #!cellchat.MRD.NT <- computeCommunProb(cellchat.MRD.NT, type = "truncatedMean", trim = 0.75)
+cellchat.MRD.NT <- computeCommunProb(cellchat.MRD.NT, type = "truncatedMean", trim = 0.5)
 
 cellchat.MRD.NT <- filterCommunication(cellchat.MRD.NT, min.cells = 2)
 
@@ -1007,20 +1503,38 @@ cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch
 cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.5pt.new.labels.default.rds")
 cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.5pt.new.labels.default.rds")
 cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.5pt.new.labels.default.rds")
-
-##load these files for 75% CellChatv2 analyses
+##results from trim = 0.75 have a capacity of 0.5 on this function (instead need to alter thresh.pc on identifyOverexpressedgenes function earlier in CellChat pipeline)
+##load these files for 75% (50%) CellChatv2 analyses
 cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.CD.scS5.75pt.new.labels.default.rds")
 cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.PreT.scS5.75pt.new.labels.default.rds")
 cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.75pt.new.labels.default.rds")
 cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.75pt.new.labels.default.rds")
 cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.75pt.new.labels.default.rds")
 
-##load these files for 75% abbreviated names CellChatv2 analyses
+##load these files for 75% (50%) abbreviated names CellChatv2 analyses
 cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.CD.scS5.75pt.abbreviated.new.labels.default.rds")
 cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.PreT.scS5.75pt.abbreviated.new.labels.default.rds")
 cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.75pt.abbreviated.new.labels.default.rds")
 cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.75pt.abbreviated.new.labels.default.rds")
 cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.75pt.abbreviated.new.labels.default.rds")
+
+##load these files for 80% filter 50pt trim abbreviated names CellChatv2 analyses
+cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.CD.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.PreT.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MWD.T.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MRD.T.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MRD.NT.scS5.80ptfilter.50pttrim.default.rds")
+
+pathways <- c("PLG_PARD3")
+par(mfrow=c(1,1))
+netVisual_heatmap(cellchat.CD, signaling = pathways, sources.use = "Hep", slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
+netVisual_heatmap(cellchat.MRD.T, signaling = pathways, sources.use = c("Hep", "Stromal", "Cancer", "Cholangio", "DC"), slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
+netVisual_heatmap(cellchat.PreT, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2)
+netVisual_heatmap(cellchat.MWD.T, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2)
+netVisual_heatmap(cellchat.MRD.NT, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2)
+
+netVisual_heatmap(cellchat.CD, slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
+netVisual_heatmap(cellchat.MRD.T, slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
 
 ##this the files for LSEC1 and LSEC2 analysis
 #!cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChat v2 LSEC1 and LSEC2/Saved_Rfiles/cellchatv2.CD.scS5.LSEC1and2.default.rds")
@@ -2876,6 +3390,13 @@ Hep.and.Cancer <- merge(Hep, y = Cancer)
 table(Hep.and.Cancer@meta.data$new.group)
 
 VlnPlot(Hep.and.Cancer, cols = c("red", "blue", "green", "black", "orange"), features = c("Hnf4a", "Afp", "Gpc3"), pt.size = 1, split.by = "new.group", group.by = "Cell.Type", log = TRUE, stack = TRUE, same.y.lims = TRUE)
+VlnPlot(Hep.and.Cancer, cols = c("red", "blue", "green", "black", "orange"), features = c("Gpc3", "Afp","Rb1", "Hnf4a"), pt.size = 1, split.by = "new.group", group.by = "Cell.Type", log = TRUE, stack = TRUE, same.y.lims = TRUE)
+
+Hep.and.Cancer.Rb1pos <- subset(Hep.and.Cancer, subset = Rb1 > 0)
+VlnPlot(Hep.and.Cancer.Rb1pos, cols = c("red", "blue", "green", "black", "orange"), features = c("Rb1", "Gpc3","Afp", "Hnf4a", "Trp53"), pt.size = 1, split.by = "new.group", group.by = "Cell.Type", log = TRUE, stack = TRUE, same.y.lims = TRUE)
+
+Hep.and.Cancer.Gpc3pos <- subset(Hep.and.Cancer, subset = Gpc3 > 0)
+VlnPlot(Hep.and.Cancer.Gpc3pos, cols = c("red", "blue", "green", "black", "orange"), features = c("Gpc3", "Afp","Rb1", "Hnf4a"), pt.size = 1, split.by = "new.group", group.by = "Cell.Type", log = TRUE, stack = TRUE, same.y.lims = TRUE)
 
 AverageExpression(Hep, feature = "Hnf4a", group.by = "replicate")
 AverageExpression(Hep, feature = "Afp", group.by = "replicate")
@@ -2997,3 +3518,4 @@ HCCp1.CD4.CD8.KC.Mac <- merge(new.Bcell, y = c(new.CD4, new.CD8, new.Cancer, new
 table(HCCp1.CD4.CD8.KC.Mac@meta.data$Select.subsets)
 
 saveRDS(HCCp1.CD4.CD8.KC.Mac, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.CD4.CD8.KC.Mac.select.subsets.rds")
+
