@@ -2,6 +2,7 @@ library(Seurat)
 library(CellChat)
 library(future)
 library(patchwork)
+library(ggplot2)
 options(stringsAsFactors = FALSE)
 
 HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.labels.RDS")
@@ -261,6 +262,7 @@ WD.nf <- subset(HCCp1.cells, idents = "WD.nf", invert = FALSE)
 MWD.T <- subset(HCCp1.cells, idents = "WD.t", invert = FALSE)
 MRD.T <- subset(HCCp1.cells, idents = "RD.t", invert = FALSE)
 MRD.NT <- subset(HCCp1.cells, idents = "RD.n", invert = FALSE)
+#!RD.t.RD.n <- subset(HCCp1.cells, idents = c("RD.t", "RD.n"), invert = FALSE)
 
 all.genes <- rownames(CD)
 CD <- ScaleData(CD, features = all.genes)
@@ -305,15 +307,22 @@ StackedVlnPlot(MRD.NT, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4",
                idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
 
 DotPlot(CD, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
-        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 80, scale.min = 0, col.min = -1.5, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,2.5))
 DotPlot(WD.nf, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
-        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 80, scale.min = 0, col.min = -1.5, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,2.5))
 DotPlot(MWD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
-        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 80, scale.min = 0, col.min = -1.5, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,2.5))
 DotPlot(MRD.T, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
-        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 80, scale.min = 0, col.min = -1.5, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,2.5))
 DotPlot(MRD.NT, features = c("H2-K1", "H2-D1", "H2-Q1", "H2-Q2", "H2-Q4", "H2-Q6", "H2-Q7", "H2-Q10", "H2-T22", "H2-T23", "H2-T24", "H2-M2", "H2-M3", "H2-M5"),
-        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"))
+        idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 80, scale.min = 0, col.min = -1.5, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.5,2.5))
+
+DotPlot(CD, features = "Cd1d1", idents = "Fibro", cols = c("blue", "red"), scale.max = 60, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(WD.nf, features = "Cd1d1", idents = "Fibro", cols = c("blue", "red"), scale.max = 60, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(MWD.T, features = "Cd1d1", idents = "Fibro", cols = c("blue", "red"), scale.max = 60, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(MRD.T, features = "Cd1d1", idents = "Fibro", cols = c("blue", "red"), scale.max = 60, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(MRD.NT, features = "Cd1d1", idents = "Fibro", cols = c("blue", "red"), scale.max = 60, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(HCCp1.cells, features = "Cd1d1", idents = "Fibro", group.by = "new.group", cols = c("blue", "red"), scale.max = 60, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
 
 ##Fas receptor in structural cells
 StackedVlnPlot(CD, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", color.use = new.colors)
@@ -340,6 +349,72 @@ DotPlot(WD.nf, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "
 DotPlot(MWD.T, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
 DotPlot(MRD.T, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
 DotPlot(MRD.NT, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+
+Idents(RD.t.RD.n) <- RD.t.RD.n@meta.data$Abbreviated
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "new.group", cols = c("blue", "red"), scale.max = 15, scale.min = 0, col.min = -1.0, col.max = 1.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.5))
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 6, scale.min = 0, col.min = -1.0, col.max = 2.5) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.5))
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "new.group", cols = c("blue", "red"), scale.max = 20, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", split.by = "new.group", cols = c("blue", "red")) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"),group.by = "Abbreviated", split.by = "new.group", cols = c("blue", "red"))
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), group.by = "Abbreviated", split.by = "new.group", cols = c("blue", "red"))
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("Tcell", "NKT", "NK"), group.by = "Abbreviated", split.by = "new.group", cols = c("blue", "red"))
+
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"), scale.max = 10, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))   
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("NKT"), group.by = "new.group", cols = c("blue", "red"), scale.max = 10, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))    
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("NK"), group.by = "new.group", cols = c("blue", "red"), scale.max = 10, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))   
+
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"), scale.max = 10, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()   
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("NKT"), group.by = "new.group", cols = c("blue", "red"), scale.max = 10, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()    
+DotPlot(RD.t.RD.n, features = "Fasl", idents = c("NK"), group.by = "new.group", cols = c("blue", "red"), scale.max = 10, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()   
+
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Endo"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("LSEC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Stromal"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("HSC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Fibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Myofibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Cholangio"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) 
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Hep"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0))
+
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Endo"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("LSEC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Stromal"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("HSC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Fibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Myofibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Cholangio"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Hep"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Fas", idents = c("Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 30, scale.min = 0, col.min = -1.0, col.max = 2.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,2.0)) + NoLegend()
+
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"), scale.max = 12, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))  
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("NKT"), group.by = "new.group", cols = c("blue", "red"), scale.max = 12, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))  
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("NK"), group.by = "new.group", cols = c("blue", "red"), scale.max = 12, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"), scale.max = 12, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()  
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("NKT"), group.by = "new.group", cols = c("blue", "red"), scale.max = 12, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend() 
+DotPlot(RD.t.RD.n, features = "Tnfsf10", idents = c("NK"), group.by = "new.group", cols = c("blue", "red"), scale.max = 12, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Endo"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("LSEC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Stromal"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("HSC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Fibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Myofibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Cholangio"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) 
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Hep"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0))
+
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Endo"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("LSEC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Stromal"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("HSC"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Fibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Myofibro"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Cholangio"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Hep"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
+DotPlot(RD.t.RD.n, features = "Tnfrsf10b", idents = c("Cancer"), group.by = "new.group", cols = c("blue", "red"), scale.max = 2.5, scale.min = 0, col.min = -1.0, col.max = 1.0) + scale_color_gradientn(colors = c("blue","red"), limits=c(-1.0,1.0)) + NoLegend()
 
 ##identify number of cells in each population and the average expression of these molecules in each population and gene+ populations
 Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
@@ -783,6 +858,29 @@ table(Cancer.Ki67@meta.data$replicate)
 AverageExpression(Hep.Ki67, features = "Mki67", group.by = "replicate")
 AverageExpression(Cancer.Ki67, features = "Mki67", group.by = "replicate")
 
+##TFs involved in IC activation
+DotPlot(HCCp1.cells, features = c("Nfam1", "Nfat5", "Nfatc1", "Nfatc2", "Nfatc2ip", "Nfatc3", "Jun", "Ap1m1", "Ap3d1", "Ap1b1", "Mapk10", "Mapk3", "Mapk6"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"))
+DotPlot(HCCp1.cells, features = c("Nfam1", "Nfat5", "Nfatc1", "Nfatc2", "Nfatc2ip", "Nfatc3", "Jun", "Ap1m1", "Ap3d1", "Ap1b1", "Mapk10", "Mapk3", "Mapk6"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Egr2", "Pparg", "Ppargc1b", "Ppargc1a", "Cebpb"), idents = c("Mac"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Tbx21", "Gata3"), idents = c("NKT"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Irf8", "Spi1", "Irf4", "Cebpb"), idents = c("Mono"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Nfil3", "Tcf7", "Id2", "Eomes", "Tox", "Zeb2", "Prdm1", "Smad4","Tbx21", "Gata3"), idents = c("NK"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Nfil3", "Id2", "Eomes", "Tbx21", "Gata3"), idents = c("NK"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Zbtb7b", "Nfam1", "Nfat5", "Nfatc1", "Nfatc2", "Nfatc2ip", "Nfatc3", "Jun", "Ap1m1", "Ap3d1", "Ap1b1", "Mapk10", "Mapk3", "Mapk6"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(HCCp1.cells, features = c("Zbtb7b"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"))
+
+DotPlot(CD, features = c("Nfam1", "Nfat5", "Nfatc1", "Nfatc2", "Nfatc2ip", "Nfatc3", "Jun", "Ap1m1", "Ap3d1", "Ap1b1", "Mapk10", "Mapk3", "Mapk6"), idents = c("Tcell"), cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Egr2", "Pparg", "Ppargc1b", "Ppargc1a", "Cebpb"), idents = c("Mac"), cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Tbx21", "Gata3"), idents = c("NKT"), cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Irf8", "Spi1", "Irf4", "Cebpb"), idents = c("Mono"), cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Nfil3", "Tcf7", "Id2", "Eomes", "Tox", "Zeb2", "Prdm1", "Smad4","Tbx21", "Gata3"), idents = c("NK"), cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Nfil3", "Id2", "Eomes", "Tbx21", "Gata3"), idents = c("NK"), cols = c("blue", "red")) + coord_flip()
+
+##change group of interest if needed (WD.nf, WD.t, RD.t, RD.n)
+DotPlot(CD, features = c("Zbtb7b", "Nfam1", "Nfat5", "Nfatc1", "Nfatc2", "Nfatc2ip", "Nfatc3", "Jun", "Ap1m1", "Ap3d1", "Ap1b1", "Mapk10", "Mapk3", "Mapk6"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Zbtb7b", "Nfam1", "Nfat5", "Nfatc1", "Nfatc2", "Nfatc2ip", "Nfatc3"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red")) + coord_flip()
+DotPlot(CD, features = c("Zbtb7b"), idents = c("Tcell"), group.by = "new.group", cols = c("blue", "red"))
+
 ########################################################
 ########################################################
 ##try to select LSEC population alone on a UMAP to separate it into two groups
@@ -1026,8 +1124,8 @@ ht1 <- netAnalysis_signalingRole_heatmap(cellchat.CD, signaling = c("IL1", "TGFb
 ht2 <- netAnalysis_signalingRole_heatmap(cellchat.CD, signaling = c("IL1", "TGFb", "IGF", "CypA", "FLT3", "VISFATIN", "EPO", "27HC", "TRAIL", "FASLG", "IL2", "CD40", "GRN", "IL16", "GALECTIN", "CCL", "CSF", "CXCL", "MIF", "AGT"), pattern = "incoming", width = 5, height = 6, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
-ht1 <- netAnalysis_signalingRole_heatmap(cellchat.CD, signaling = c("GALECTIN", "NRG", "COMPLEMENT", "SPP1", "Glutamate", "TGFb", "IL1", "FLT3", "FASLG", "IL2", "CD40", "TRAIL"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
-ht2 <- netAnalysis_signalingRole_heatmap(cellchat.CD, signaling = c("GALECTIN", "NRG", "COMPLEMENT", "SPP1", "Glutamate", "TGFb", "IL1", "FLT3", "FASLG", "IL2", "CD40", "TRAIL"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat.CD, signaling = c("GALECTIN", "NRG", "COMPLEMENT", "PARs", "SPP1", "Glutamate", "TGFb", "IL1", "FLT3", "FASLG", "IL2", "CD40", "TRAIL"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat.CD, signaling = c("GALECTIN", "NRG", "COMPLEMENT", "PARs", "SPP1", "Glutamate", "TGFb", "IL1", "FLT3", "FASLG", "IL2", "CD40", "TRAIL"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
 ##5% filtered pathways based on those detected in 25 and 75% analyses
@@ -1137,8 +1235,8 @@ ht1 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, signaling = c("IL1", "TG
 ht2 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, signaling = c("IL1", "TGFb", "IGF", "FLT3", "VISFATIN", "27HC", "TRAIL", "TNF", "FASLG", "IL2", "IL12", "GRN", "IL16", "GALECTIN", "CCL", "CSF", "CXCL", "LIFR", "AGT", "SAA", "TWEAK", "CX3C"), pattern = "incoming", width = 5, height = 6, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
-ht1 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, signaling = c("GALECTIN", "COMPLEMENT", "SPP1", "TGFb", "NRG", "Glutamate", "IL1", "IL2", "FASLG", "FLT3","TRAIL"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
-ht2 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, signaling = c("GALECTIN", "COMPLEMENT", "SPP1", "TGFb", "NRG", "Glutamate", "IL1", "IL2", "FASLG", "FLT3","TRAIL"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, signaling = c("PARs", "GALECTIN", "COMPLEMENT", "SPP1", "TGFb", "NRG", "Glutamate", "IL1", "IL2", "FASLG", "FLT3","TRAIL"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, signaling = c("PARs", "GALECTIN", "COMPLEMENT", "SPP1", "TGFb", "NRG", "Glutamate", "IL1", "IL2", "FASLG", "FLT3","TRAIL"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
 ##5% filtered pathways based on those detected already in 25 and 75% analyses
@@ -1247,8 +1345,8 @@ ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MWD.T, signaling = c("IL1", "T
 ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MWD.T, signaling = c("IL1", "TGFb", "IGF", "CypA", "VISFATIN", "EPO", "27HC", "TRAIL", "TNF", "FASLG", "IL2", "GRN", "IL16", "GALECTIN", "CCL", "CSF", "CXCL", "LIFR", "MIF", "AGT", "SAA", "TWEAK", "IFN-I", "IL10"), pattern = "incoming", width = 5, height = 6, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
-ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MWD.T, signaling = c("SPP1", "COMPLEMENT", "GALECTIN", "NRG", "TGFb", "IL1", "Glutamate", "IL2", "FASLG", "TRAIL"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
-ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MWD.T, signaling = c("SPP1", "COMPLEMENT", "GALECTIN", "NRG", "TGFb", "IL1", "Glutamate", "IL2", "FASLG", "TRAIL"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MWD.T, signaling = c("PARs", "SPP1", "COMPLEMENT", "GALECTIN", "NRG", "TGFb", "IL1", "Glutamate", "IL2", "FASLG", "TRAIL"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MWD.T, signaling = c("PARs", "SPP1", "COMPLEMENT", "GALECTIN", "NRG", "TGFb", "IL1", "Glutamate", "IL2", "FASLG", "TRAIL"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
 ##5% filtered pathways based on those detected in 25 and 75% analyses
@@ -1357,8 +1455,8 @@ ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.T, signaling = c("IL1", "T
 ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.T, signaling = c("IL1", "TGFb", "IGF", "CypA", "VISFATIN", "27HC", "FASLG", "IL2", "GRN", "IL16", "GALECTIN", "CCL", "CSF", "CXCL", "LIFR", "MIF", "AGT", "SAA", "TWEAK", "IFN-I"), pattern = "incoming", width = 5, height = 6, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
-ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.T, signaling = c("GALECTIN", "COMPLEMENT", "SPP1", "NRG", "TGFb", "IL1", "Glutamate", "FASLG", "IL2"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
-ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.T, signaling = c("GALECTIN", "COMPLEMENT", "SPP1", "NRG", "TGFb", "IL1", "Glutamate", "FASLG", "IL2"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.T, signaling = c("PARs", "GALECTIN", "COMPLEMENT", "SPP1", "NRG", "TGFb", "IL1", "Glutamate", "FASLG", "IL2"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.T, signaling = c("PARs", "GALECTIN", "COMPLEMENT", "SPP1", "NRG", "TGFb", "IL1", "Glutamate", "FASLG", "IL2"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
 ##5% filtered pathways based on those detected in 25 and 75% analyses
@@ -1468,8 +1566,8 @@ ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.NT, signaling = c("IL1", "
 ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.NT, signaling = c("IL1", "TGFb", "IGF", "CypA", "VISFATIN", "27HC", "TNF", "FASLG", "IL2", "IL12", "GRN", "IL16", "GALECTIN", "CCL", "CSF", "CXCL", "LIFR", "MIF", "AGT", "SAA", "TWEAK", "IFN-I"), pattern = "incoming", width = 5, height = 6, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
-ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.NT, signaling = c("SPP1", "COMPLEMENT", "NRG", "IL1", "Glutamate", "TGFb", "IL2", "FASLG"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
-ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.NT, signaling = c("SPP1", "COMPLEMENT", "NRG", "IL1", "Glutamate", "TGFb", "IL2", "FASLG"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht1 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.NT, signaling = c("PARs", "SPP1", "COMPLEMENT", "NRG", "IL1", "Glutamate", "TGFb", "IL2", "FASLG"), pattern = "outgoing", width = 5, height = 5, font.size = 8, font.size.title = 9)
+ht2 <- netAnalysis_signalingRole_heatmap(cellchat.MRD.NT, signaling = c("PARs", "SPP1", "COMPLEMENT", "NRG", "IL1", "Glutamate", "TGFb", "IL2", "FASLG"), pattern = "incoming", width = 5, height = 5, font.size = 8, font.size.title = 9)
 ht1 + ht2
 
 ##5% filtered pathways based on those detected in 25 and 75% analyses
@@ -1527,14 +1625,20 @@ cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koels
 
 pathways <- c("PLG_PARD3")
 par(mfrow=c(1,1))
-netVisual_heatmap(cellchat.CD, signaling = pathways, sources.use = "Hep", slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
-netVisual_heatmap(cellchat.MRD.T, signaling = pathways, sources.use = c("Hep", "Stromal", "Cancer", "Cholangio", "DC"), slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
-netVisual_heatmap(cellchat.PreT, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2)
-netVisual_heatmap(cellchat.MWD.T, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2)
-netVisual_heatmap(cellchat.MRD.NT, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2)
+netVisual_heatmap(cellchat.CD, signaling = pathways, sources.use = "Hep", slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2, font.size = 10, font.size.title = 10)
+netVisual_heatmap(cellchat.MRD.T, signaling = pathways, sources.use = c("Hep", "Stromal", "Cancer", "Cholangio", "DC"), slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2, font.size = 10, font.size.title = 10)
+netVisual_heatmap(cellchat.PreT, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2, font.size = 10, font.size.title = 10)
+netVisual_heatmap(cellchat.MWD.T, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2, font.size = 10, font.size.title = 10)
+netVisual_heatmap(cellchat.MRD.NT, slot.name = "netP", color.heatmap = "BuGn", width = 1, height = 2, font.size = 10, font.size.title = 10)
 
 netVisual_heatmap(cellchat.CD, slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
 netVisual_heatmap(cellchat.MRD.T, slot.name = "net", color.heatmap = "BuGn", width = 1, height = 2)
+
+netVisual_chord_gene(cellchat.CD, slot.name = "netP", lab.cex = 0.9, thresh = 0.01, legend.pos.x = 5, legend.pos.y = 10)
+netVisual_chord_gene(cellchat.PreT, slot.name = "netP", lab.cex = 0.9, thresh = 0.01, legend.pos.x = 5, legend.pos.y = 5)
+netVisual_chord_gene(cellchat.MWD.T, slot.name = "netP", lab.cex = 0.7, thresh = 0.01, small.gap = 2, big.gap = 10, legend.pos.x = 5, legend.pos.y = 5)
+netVisual_chord_gene(cellchat.MRD.T, slot.name = "netP", lab.cex = 0.9, thresh = 0.01, legend.pos.x = 5, legend.pos.y = 5)
+netVisual_chord_gene(cellchat.MRD.NT, slot.name = "netP", lab.cex = 0.8, thresh = 0.01, small.gap = 2, big.gap = 10, legend.pos.x = 5, legend.pos.y = 5)
 
 ##this the files for LSEC1 and LSEC2 analysis
 #!cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChat v2 LSEC1 and LSEC2/Saved_Rfiles/cellchatv2.CD.scS5.LSEC1and2.default.rds")
@@ -1568,6 +1672,10 @@ object.list <- list(CD = cellchat.CD, WD.nf = cellchat.PreT, WD.t = cellchat.MWD
 
 cellchat <- mergeCellChat(object.list, add.names = names(object.list))
 
+##for 80% analysis can only compared WD.nf/WD.t/RD.n bc CD and RD.t only have 1 LR/Pathway and cannot compute centrality
+object.list <- list(WD.nf = cellchat.PreT, WD.t = cellchat.MWD.T, RD.n = cellchat.MRD.NT)
+cellchat <- mergeCellChat(object.list, add.names = names(object.list))
+
 ##this is for CDvPreT comparisons with rankNet and signalingrole Scatter ONLY
 object.list.CDvPreT <- list(CD = cellchat.CD, PreT = cellchat.PreT)
 
@@ -1581,6 +1689,10 @@ cellchat.PreTvMWD.T <- mergeCellChat(object.list.PreTvMWD.T, add.names = names(o
 ##once all analyzed groups are merged together we can compare total number of interactions and strengths
 gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1,2,3,4,5))
 gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1,2,3,4,5), measure = "weight")
+gg1 + gg2
+##for 80% CD and RD.t cannot have centrality computed so can only compare WD.nf/WD.t/RD.n
+gg1 <- compareInteractions(cellchat, show.legend = F, group = c(1,2,3))
+gg2 <- compareInteractions(cellchat, show.legend = F, group = c(1,2,3), measure = "weight")
 gg1 + gg2
 
 ##look for differential number of interactons with circos plots
@@ -1669,6 +1781,23 @@ for (i in 1:length(object.list)) {
 }
 patchwork::wrap_plots(plots = gg)
 
+##75(50%) analysis
+num.link <- sapply(object.list, function(x) {rowSums(x@net$count) + colSums(x@net$count)-diag(x@net$count)})
+weight.MinMax <- c(min(num.link), max(num.link)) # control the dot size in the different datasets
+gg <- list()
+for (i in 1:length(object.list)) {
+  gg[[i]] <- netAnalysis_signalingRole_scatter(object.list[[i]], title = names(object.list)[i], weight.MinMax = weight.MinMax) + scale_y_continuous(breaks = seq(0, 16, by = 2), limits = c(0,16)) + scale_x_continuous(breaks = seq(0, 16, by = 2), limits = c(0,16))
+}
+patchwork::wrap_plots(plots = gg)
+
+##80% analysis grouops
+num.link <- sapply(object.list, function(x) {rowSums(x@net$count) + colSums(x@net$count)-diag(x@net$count)})
+weight.MinMax <- c(min(num.link), max(num.link)) # control the dot size in the different datasets
+gg <- list()
+for (i in 1:length(object.list)) {
+  gg[[i]] <- netAnalysis_signalingRole_scatter(object.list[[i]], title = names(object.list)[i], weight.MinMax = weight.MinMax) + scale_y_continuous(breaks = seq(0, 10, by = 2), limits = c(0,10)) + scale_x_continuous(breaks = seq(0, 10, by = 2), limits = c(0,10))
+}
+patchwork::wrap_plots(plots = gg)
 ##try to make same plots but only for stromal from each group
 ##try to identify specific changes of a cell type b/w conditions 
 ##this can only handle 2 comparisons at a time
@@ -2086,6 +2215,25 @@ plotGeneExpression(cellchat, signaling = "TGFb", split.by = "group", type = c("v
 
 ###############################################################################################################
 ##from each saved group we loaded in try to extract the required pathways for stromal cells sending and receiving signals
+
+##identify Gzma function in PARs pathway
+interaction_name <- "GZMA_F2R"
+Df.CD <- data.frame(interaction_name)
+Df.CD[nrow(Df.CD) + 1,] <- "GZMA_PARD3"
+
+netVisual_chord_gene(cellchat.CD, pairLR.use = Df.CD, lab.cex = 1, thresh = 0.01, legend.pos.x = 4)
+netVisual_chord_gene(cellchat.CD, pairLR.use = Df.CD, lab.cex = 1, thresh = 0.01, legend.pos.x = 4, show.legend = FALSE)
+
+Df.WDnf <- data.frame(interaction_name)
+Df.WDnf[nrow(Df.WDnf) + 1,] <- "GZMA_F2RL2"
+Df.WDnf[nrow(Df.WDnf) + 1,] <- "GZMA_PARD3"
+
+netVisual_chord_gene(cellchat.PreT, pairLR.use = Df.WDnf, lab.cex = 1, thresh = 0.01, legend.pos.x = 4)
+netVisual_chord_gene(cellchat.PreT, pairLR.use = Df.WDnf, lab.cex = 1, thresh = 0.01, legend.pos.x = 4, show.legend = FALSE)
+netVisual_chord_gene(cellchat.MRD.T, pairLR.use = Df.WDnf, lab.cex = 1, thresh = 0.01, legend.pos.x = 4)
+netVisual_chord_gene(cellchat.MRD.T, pairLR.use = Df.WDnf, lab.cex = 1, thresh = 0.01, legend.pos.x = 4, show.legend = FALSE)
+netVisual_chord_gene(cellchat.MRD.NT, pairLR.use = Df.WDnf, lab.cex = 1, thresh = 0.01, legend.pos.x = 4)
+netVisual_chord_gene(cellchat.MRD.NT, pairLR.use = Df.WDnf, lab.cex = 1, thresh = 0.01, legend.pos.x = 4, show.legend = FALSE)
 
 ##first for CD cellchat analysis 
 ##stromal specific pathways first
@@ -2963,6 +3111,9 @@ netAnalysis_contribution(cellchat.MRD.NT, signaling = "NRG", thresh = 0.01, font
 netVisual_chord_cell(cellchat.MRD.NT, signaling = "SPP1", lab.cex = 1, thresh = 0.01, remove.isolate = TRUE)
 netAnalysis_contribution(cellchat.MRD.NT, signaling = "SPP1", thresh = 0.01, font.size = 16, font.size.title = 16) + theme(text = element_text(size=16))
 
+netVisual_chord_cell(cellchat.MRD.NT, signaling = "NRG", lab.cex = 1, thresh = 0.01)
+netAnalysis_contribution(cellchat.MRD.NT, signaling = "NRG", thresh = 0.01, font.size = 16, font.size.title = 16) + theme(text = element_text(size=16))
+
 ##from each saved group we loaded in extract the  pathways for cancer cells sending and receiving signals
 ##save all pathways that are specific for cancer that were not saved/shared with stromal cells
 
@@ -3518,4 +3669,5 @@ HCCp1.CD4.CD8.KC.Mac <- merge(new.Bcell, y = c(new.CD4, new.CD8, new.Cancer, new
 table(HCCp1.CD4.CD8.KC.Mac@meta.data$Select.subsets)
 
 saveRDS(HCCp1.CD4.CD8.KC.Mac, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.CD4.CD8.KC.Mac.select.subsets.rds")
+
 
