@@ -49,11 +49,11 @@ table(all.cells@meta.data$new.group)
 saveRDS(all.cells, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.rds")
 # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 ##now we can load from this new labeled data for UMAPs too
-HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.rds")
+#!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.rds")
 ##use this to load in abbreviated cell tyep names for updated group names as well analysis
 HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.abbreviated.group.names.rds")
 ##use this to load in select subsets (CD4/CD8/KC/Mac) and abbreviated names for updated group names as well analysis
-HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.select.subsets.CD4.8.KC.Mac.new.group.labels.rds")
+#!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.select.subsets.CD4.8.KC.Mac.new.group.labels.rds")
 
 Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
 table(HCCp1.cells@meta.data$new.group)
