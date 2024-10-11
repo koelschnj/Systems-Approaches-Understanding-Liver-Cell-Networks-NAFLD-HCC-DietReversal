@@ -5,14 +5,14 @@ library(patchwork)
 library(ggplot2)
 options(stringsAsFactors = FALSE)
 
-HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.labels.RDS")
+#!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.labels.RDS")
 #!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.combo.stromal.labels.RDS")
 ##use this for more updated and uniform LSEC1 and LSEC2 labels
 #!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.LSEC1and2.all.new.labels.RDS")
 ##use this for abbreviated labels performed with analysis
 HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.labels.abbreviated.RDS")
 ##use this for select subsets (CD4/CD8/KC/Mac) w/ abbreviated labels
-HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.CD4.CD8.KC.Mac.select.subsets.RDS")
+#!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.CD4.CD8.KC.Mac.select.subsets.RDS")
 
 Idents(HCCp1.cells) <- HCCp1.cells@meta.data$group
 table(HCCp1.cells@meta.data$group)
