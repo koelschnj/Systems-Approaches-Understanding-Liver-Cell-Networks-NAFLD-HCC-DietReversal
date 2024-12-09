@@ -1,0 +1,74 @@
+library(Seurat)
+library(patchwork)
+library(ggplot2)
+HCCp1.cells <- readRDS(file = "~/HCC_paper1/Saved_Rfiles/HCCp1.cells.sorted.new.abbreviated.group.names.rds")
+
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
+table(HCCp1.cells@meta.data$new.group)
+
+new.group.levels <- c("CD", "WD.nf", "WD.t", "RD.t", "RD.n")
+HCCp1.cells@meta.data$new.group <- factor(x = HCCp1.cells@meta.data$new.group, levels = new.group.levels)
+table(HCCp1.cells@meta.data$new.group)
+
+##use this for abbreviated cell type levels
+new.cell.type.levels <- c("Bcell", "Tcell", "DC", "NKT", "NK", "Neutro", "Mono", "Mac", "Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer")
+
+HCCp1.cells@meta.data$Abbreviated <- factor(x = HCCp1.cells@meta.data$Abbreviated, levels = new.cell.type.levels)
+table(HCCp1.cells@meta.data$Abbreviated)
+
+Idents(HCCp1.cells) <-HCCp1.cells@meta.data$Abbreviated
+HCCp1.IC <- subset(HCCp1.cells, idents = c("Bcell", "Tcell", "DC", "NKT", "NK", "Neutro", "Mono", "Mac"), invert = FALSE)
+table(HCCp1.IC@meta.data$Abbreviated)
+
+all.genes <- rownames(HCCp1.IC)
+HCCp1.IC <- ScaleData(HCCp1.IC, features = all.genes)
+
+all.genes <- rownames(HCCp1.cells)
+HCCp1.cells <- ScaleData(HCCp1.cells, features = all.genes)
+
+maxcells  <- min(table(Idents(HCCp1.cells)))
+DoHeatmap(subset(HCCp1.cells, downsample = 1500), features = c("Cd19", "Cd22", "Cd79a", "Cd79b", "Ebf1", "Ighd", "Ighm", "Ms4a1",
+                                   "Cd3d", "Cd3e", "Cd4", "Cd8a", "Cd8b1", "Thy1", "Il7r", "Prkcq", "Lef1", "Cd247",
+                                    "Cst3", "Cd80", "Cd83", "H2-Ab1", "Ly6d", "Siglech", "Zbtb46", "Rnase6", "Itgax", "Irf8",
+                                    "Il15ra", "Tox", "Cd36", "Ccl5",
+                                    "Itga1", "Eomes", "Gzma", "Gzmb", "Klf2", "Klra4", "Klra9", "Klrb1c", "Klre1", "Lgals1",
+                                    "S100a8", "S100a9", "Retnlg", "Mmp9", "Il1b", "Il1r2", "Csf3r", "Cxcr2",
+                                    "Cd209a", "Ccr2", "Cd74", "Chil3", "Fn1", "Ly6c2", "S100a4", "Itgam",
+                                    "Adgre1", "Apoe", "C1qa", "C1qb", "Ccnb2", "Cd68", "Clec4f", "Csf1r", "Ctss", "Lyz2", "Sdc3", "Stmn1", "Top2a", "Ube2c",
+                                    "Dpp4", "Bmp2", "C1qtnf1", "F8", "Il1a", "Mmrn2", "Oit3", "Pcdh12", "Ushbp1",
+                                    "Stab2", "Lyve1",
+                                    "Prkg1", "Gpc6",
+                                    "Acta2", "Bgn", "Col14a1", "Col3a1", "Dcn", "Ecm1", "Lrat", "Pdgfra", "Pdgfrb", "Reln", "Tcf21", "Tmem56", "Tpm2",
+                                    "Cd34", "Thy1", "Clec3b", "Col15a1", "Entpd2", "Fbln2", "Gli1",
+                                    "Nt5e", "Des", "Dpt", "Eln", "Fbln1",
+                                    "Spp1", "Cftr", "Epcam", "Krt19", "Krt7", "Muc1", "Pkhd1", "Sox9", "St14",
+                                    "Alb", "Acly", "Apoa1", "Asl", "Ass1", "Cyp2e1", "Cyp2f2", "G6pc", "Glul", "Mup3", "Pck1",
+                                    "Hnf4a", "Afp", "Gpc3"), group.by = "Abbreviated", size = 3) + NoLegend()
+
+maxcells  <- min(table(Idents(HCCp1.IC)))
+DoHeatmap(subset(HCCp1.IC, downsample = maxcells), features = c("Cd19", "Cd22", "Cd79a", "Cd79b", "Ebf1", "Ighd", "Ighm", "Ms4a1",
+                                 "Cd3d", "Cd3e", "Cd4", "Cd8a", "Cd8b1", "Thy1", "Il7r", "Prkcq", "Lef1", "Cd247",
+                                 "Cst3", "Cd80", "Cd83", "H2-Ab1", "Ly6d", "Siglech", "Zbtb46", "Rnase6", "Itgax", "Irf8",
+                                 "Il15ra", "Tox", "Cd36", "Ccl5",
+                                 "Itga1", "Eomes", "Gzma", "Gzmb", "Klf2", "Klra4", "Klra9", "Klrb1c", "Klre1", "Lgals1",
+                                 "S100a8", "S100a9", "Retnlg", "Mmp9", "Il1b", "Il1r2", "Csf3r", "Cxcr2",
+                                 "Cd209a", "Ccr2", "Cd74", "Chil3", "Fn1", "Ly6c2", "S100a4", "Itgam",
+                                 "Adgre1", "Apoe", "C1qa", "C1qb", "Ccnb2", "Cd68", "Clec4f", "Csf1r", "Ctss", "Lyz2", "Sdc3", "Stmn1", "Top2a", "Ube2c"), group.by = "Abbreviated", size = 3) + NoLegend()
+
+Idents(HCCp1.cells) <-HCCp1.cells@meta.data$Abbreviated
+HCCp1.nonIC <- subset(HCCp1.cells, idents = c("Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer"), invert = FALSE)
+table(HCCp1.nonIC@meta.data$Abbreviated)
+
+all.genes <- rownames(HCCp1.nonIC)
+HCCp1.nonIC <- ScaleData(HCCp1.nonIC, features = all.genes)
+
+maxcells  <- min(table(Idents(HCCp1.nonIC)))
+DoHeatmap(subset(HCCp1.nonIC, downsample = maxcells), features = c("Dpp4", "Bmp2", "C1qtnf1", "F8", "Il1a", "Mmrn2", "Oit3", "Pcdh12", "Ushbp1",
+                                    "Stab2", "Lyve1",
+                                    "Prkg1", "Gpc6",
+                                    "Acta2", "Bgn", "Col14a1", "Col3a1", "Dcn", "Ecm1", "Lrat", "Pdgfra", "Pdgfrb", "Reln", "Tcf21", "Tmem56", "Tpm2",
+                                    "Cd34", "Thy1", "Clec3b", "Col15a1", "Entpd2", "Fbln2", "Gli1",
+                                    "Nt5e", "Des", "Dpt", "Eln", "Fbln1",
+                                    "Spp1", "Cftr", "Epcam", "Krt19", "Krt7", "Muc1", "Pkhd1", "Sox9", "St14",
+                                    "Alb", "Acly", "Apoa1", "Asl", "Ass1", "Cyp2e1", "Cyp2f2", "G6pc", "Glul", "Mup3", "Pck1",
+                                    "Hnf4a", "Afp", "Gpc3"), group.by = "Abbreviated", size = 3) + NoLegend()
