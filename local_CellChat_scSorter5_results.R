@@ -33,7 +33,7 @@ MRD.NT <- subset(HCCp1.cells, idents = "MRD.NT", invert = FALSE)
 table(MRD.NT@meta.data$group)
 
 CD.name <- "CD"
-PreT.name <- "WD.nf"
+PreT.name <- "WD.mf"
 MWD.T.name <- "WD.t"
 MRD.T.name <- "RD.t"
 MRD.NT.name <- "RD.n"
@@ -46,19 +46,23 @@ MRD.NT <- AddMetaData(MRD.NT, metadata = MRD.NT.name, col.name = "new.group")
 
 all.cells <- merge(CD, y = c(PreT, MWD.T, MRD.T, MRD.NT))
 table(all.cells@meta.data$new.group)
-saveRDS(all.cells, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.rds")
+saveRDS(all.cells, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.groupWDmf.names.rds")
+#!saveRDS(all.cells, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.rds")
 # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 ##now we can load from this new labeled data for UMAPs too
 #!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.rds")
 ##use this to load in abbreviated cell tyep names for updated group names as well analysis
-HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.abbreviated.group.names.rds")
+#!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.abbreviated.group.names.rds")
+##use this for abbreviated cell type and new group name with WD.mf instead of WD.nf
+HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.groupWDmf.names.rds")
 ##use this to load in select subsets (CD4/CD8/KC/Mac) and abbreviated names for updated group names as well analysis
 #!HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.select.subsets.CD4.8.KC.Mac.new.group.labels.rds")
 
 Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
 table(HCCp1.cells@meta.data$new.group)
 
-new.group.levels <- c("CD", "WD.nf", "WD.t", "RD.t", "RD.n")
+new.group.levels <- c("CD", "WD.mf", "WD.t", "RD.t", "RD.n")
+#!new.group.levels <- c("CD", "WD.nf", "WD.t", "RD.t", "RD.n")
 HCCp1.cells@meta.data$new.group <- factor(x = HCCp1.cells@meta.data$new.group, levels = new.group.levels)
 table(HCCp1.cells@meta.data$new.group)
 
@@ -835,7 +839,7 @@ StackedVlnPlot(MRD.NT, features = "Cd1d1", group.by = "Select.subsets", color.us
 ##Ki67 expresion in dormant tumor groups
 Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
 
-CD.WDnf.RDn <- subset(HCCp1.cells, idents = c("CD", "WD.nf", "RD.n"), invert = FALSE)
+CD.WDnf.RDn <- subset(HCCp1.cells, idents = c("CD", "WD.mf", "RD.n"), invert = FALSE)
 
 Idents(CD.WDnf.RDn) <- CD.WDnf.RDn@meta.data$Abbreviated
 Idents(HCCp1.cells) <- HCCp1.cells@meta.data$Abbreviated
@@ -980,7 +984,7 @@ CD.cells@meta.data$Select.subsets <- factor(x = CD.cells@meta.data$Select.subset
 table(CD.cells@meta.data$Select.subsets)
 Idents(CD.cells) <- CD.cells@meta.data$Select.subsets
 
-PreT.cells <- subset(HCCp1.cells, idents = "WD.nf", invert = FALSE)
+PreT.cells <- subset(HCCp1.cells, idents = "WD.mf", invert = FALSE)
 table(PreT.cells@meta.data$new.group)
 PreT.cells@meta.data$Select.subsets <- factor(x = PreT.cells@meta.data$Select.subsets, levels = new.cell.type.levels)
 table(PreT.cells@meta.data$Select.subsets)
@@ -1146,8 +1150,8 @@ saveRDS(cellchat.CD, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koel
 cellchat.PreT <- subsetData(cellchat.PreT)
 future::plan("multisession", workers = 2)
 
-#!cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT)
-cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT, thresh.pc = 0.80)
+cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT)
+#!cellchat.PreT <- identifyOverExpressedGenes(cellchat.PreT, thresh.pc = 0.80)
 cellchat.PreT <- identifyOverExpressedInteractions(cellchat.PreT)
 
 unique(cellchat.PreT@idents)
@@ -1250,9 +1254,9 @@ ht2 <- netAnalysis_signalingRole_heatmap(cellchat.PreT, pattern = "incoming", wi
 ht1 + ht2
 
 PreT.df.net <- subsetCommunication(cellchat.PreT, slot.name = "net")
-write.csv(PreT.df.net, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt CD4CD8/PreT.scS5.v2.25pt.CD4CD8.df.net.default.csv")
+write.csv(PreT.df.net, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/WDmf.scS5.v2.25pt.CD4CD8.df.net.default.csv")
 
-saveRDS(cellchat.PreT, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt CD4CD8/Saved_Rfiles/cellchatv2.PreT.scS5.25pt.CD4CD8.default.rds")
+saveRDS(cellchat.PreT, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.WDmf.scS5.75pt.abbreviated.new.labels.default.rds")
 ##after saving PreT move on to MWD.T
 cellchat.MWD.T <- subsetData(cellchat.MWD.T)
 future::plan("multisession", workers = 2)
@@ -1589,18 +1593,18 @@ saveRDS(cellchat.MRD.NT, file = "T:/Microbiology and Immunology/ManjiliLab/Nick 
 ##prototypical vignettes only do 2 conditions, but creator of CellChat says more is possible
 
 ##load these files for default CellChatv2 analyses
-cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.CD.scS5.new.labels.default.rds")
-cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.PreT.scS5.new.labels.default.rds")
-cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.new.labels.default.rds")
-cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.new.labels.default.rds")
-cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.new.labels.default.rds")
+cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.CD.scS5.new.labels.default.rds")
+cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.PreT.scS5.new.labels.default.rds")
+cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.new.labels.default.rds")
+cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.new.labels.default.rds")
+cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.new.labels.default.rds")
 
 ##load these files for 5% CellChatv2 analyses
-cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.CD.scS5.5pt.new.labels.default.rds")
-cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.PreT.scS5.5pt.new.labels.default.rds")
-cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.5pt.new.labels.default.rds")
-cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.5pt.new.labels.default.rds")
-cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.5pt.new.labels.default.rds")
+cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.CD.scS5.5pt.new.labels.default.rds")
+cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.PreT.scS5.5pt.new.labels.default.rds")
+cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.5pt.new.labels.default.rds")
+cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.5pt.new.labels.default.rds")
+cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 5pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.5pt.new.labels.default.rds")
 ##results from trim = 0.75 have a capacity of 0.5 on this function (instead need to alter thresh.pc on identifyOverexpressedgenes function earlier in CellChat pipeline)
 ##load these files for 75% (50%) CellChatv2 analyses
 cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.CD.scS5.75pt.new.labels.default.rds")
@@ -1610,18 +1614,21 @@ cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsc
 cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.75pt.new.labels.default.rds")
 
 ##load these files for 75% (50%) abbreviated names CellChatv2 analyses
-cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.CD.scS5.75pt.abbreviated.new.labels.default.rds")
-cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.PreT.scS5.75pt.abbreviated.new.labels.default.rds")
-cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.75pt.abbreviated.new.labels.default.rds")
-cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.75pt.abbreviated.new.labels.default.rds")
-cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 75pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.75pt.abbreviated.new.labels.default.rds")
+cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.CD.scS5.75pt.abbreviated.new.labels.default.rds")
+#!cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.PreT.scS5.75pt.abbreviated.new.labels.default.rds")
+cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.MWD.T.scS5.75pt.abbreviated.new.labels.default.rds")
+cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.MRD.T.scS5.75pt.abbreviated.new.labels.default.rds")
+cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.75pt.abbreviated.new.labels.default.rds")
 
 ##load these files for 80% filter 50pt trim abbreviated names CellChatv2 analyses
-cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.CD.scS5.80ptfilter.50pttrim.default.rds")
-cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.PreT.scS5.80ptfilter.50pttrim.default.rds")
-cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MWD.T.scS5.80ptfilter.50pttrim.default.rds")
-cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MRD.T.scS5.80ptfilter.50pttrim.default.rds")
-cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MRD.NT.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.CD.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.PreT.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MWD.T.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MRD.T.scS5.80ptfilter.50pttrim.default.rds")
+cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 80pt filter 50pt trim/cellchatv2.MRD.NT.scS5.80ptfilter.50pttrim.default.rds")
+
+##load this file for 75% (50%) abbreviated names and WD.mf group renamed from WD.nf
+cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 50pt/Saved_Rfiles/cellchatv2.WDmf.scS5.75pt.abbreviated.new.labels.default.rds")
 
 pathways <- c("PLG_PARD3")
 par(mfrow=c(1,1))
@@ -1655,11 +1662,11 @@ netVisual_chord_gene(cellchat.MRD.NT, slot.name = "netP", lab.cex = 0.8, thresh 
 #!cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChat v2 5pt/Saved_Rfiles/cellchatv2.MRD.NT.scS5.5pt.default.rds")
 
 ##use these files for abbreviated cell type default analysis
-cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt abbreviated.labels/Saved_Rfiles/cellchatv2.CD.scS5.abbreviated.new.labels.default.rds")
-cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt abbreviated.labels/Saved_Rfiles/cellchatv2.PreT.scS5.abbreviated.new.labels.default.rds")
-cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt abbreviated.labels/Saved_Rfiles/cellchatv2.MWD.T.scS5.abbreviated.new.labels.default.rds")
-cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt abbreviated.labels/Saved_Rfiles/cellchatv2.MRD.T.scS5.abbreviated.new.labels.default.rds")
-cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt abbreviated.labels/Saved_Rfiles/cellchatv2.MRD.NT.scS5.abbreviated.new.labels.default.rds")
+cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/25pt abbreviated.labels for differential interactions/Saved_Rfiles/cellchatv2.CD.scS5.abbreviated.new.labels.default.rds")
+cellchat.PreT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/25pt abbreviated.labels for differential interactions/Saved_Rfiles/cellchatv2.PreT.scS5.abbreviated.new.labels.default.rds")
+cellchat.MWD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/25pt abbreviated.labels for differential interactions/Saved_Rfiles/cellchatv2.MWD.T.scS5.abbreviated.new.labels.default.rds")
+cellchat.MRD.T <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/25pt abbreviated.labels for differential interactions/Saved_Rfiles/cellchatv2.MRD.T.scS5.abbreviated.new.labels.default.rds")
+cellchat.MRD.NT <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/2024/CellChat/CellChatv2 25pt/25pt abbreviated.labels for differential interactions/Saved_Rfiles/cellchatv2.MRD.NT.scS5.abbreviated.new.labels.default.rds")
 
 ##use these files for 25pt select.subsets analysis (CD4/CD8/KC/Mac) 
 cellchat.CD <- readRDS("T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/SciReports 2024/CellChat/CellChatv2 25pt CD4CD8/Saved_Rfiles/cellchatv2.CD.scS5.25pt.CD4CD8.default.rds")
@@ -3572,7 +3579,30 @@ saveRDS(Cancer, file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/H
 
 Hep <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.Hep.only.rds")
 Cancer <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.group.names.Cancer.only.rds")
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+##conversely, read in Abbreviated label data here with WD.mf adjustment
+HCCp1.cells <- readRDS(file = "T:/Microbiology and Immunology/ManjiliLab/Nick Koelsch/HCC/PhD RNAseq/Reverse Diet Data/HCCp1.cells.sorted.new.groupWDmf.names.rds")
+Idents(HCCp1.cells) <- HCCp1.cells@meta.data$new.group
+table(HCCp1.cells@meta.data$new.group)
+new.group.levels <- c("CD", "WD.mf", "WD.t", "RD.t", "RD.n")
+#!new.group.levels <- c("CD", "WD.nf", "WD.t", "RD.t", "RD.n")
+HCCp1.cells@meta.data$new.group <- factor(x = HCCp1.cells@meta.data$new.group, levels = new.group.levels)
+table(HCCp1.cells@meta.data$new.group)
+new.cell.type.levels <- c("Bcell", "Tcell", "DC", "NKT", "NK", "Neutro", "Mono", "Mac", "Endo", "LSEC", "Stromal", "HSC", "Fibro", "Myofibro", "Cholangio", "Hep", "Cancer")
+HCCp1.cells@meta.data$Abbreviated <- factor(x = HCCp1.cells@meta.data$Abbreviated, levels = new.cell.type.levels)
+table(HCCp1.cells@meta.data$Abbreviated)
 
+Idents(HCCp1.cells) <-HCCp1.cells@meta.data$Abbreviated
+Hep.and.Cancer <- subset(HCCp1.cells, idents = c("Hep", "Cancer"), invert = FALSE)
+table(Hep.and.Cancer@meta.data$Abbreviated)
+table(Hep.and.Cancer@meta.data$new.group)
+
+VlnPlot(Hep.and.Cancer, cols = c("red", "blue", "green", "black", "orange"), features = c("Gpc3", "Afp", "Rb1", "Hnf4a"), idents = c("Hep", "Cancer"), pt.size = 1, split.by = "new.group", group.by = "Abbreviated", log = TRUE, stack = TRUE, same.y.lims = TRUE)
+
+Hep.and.Cancer.Gpc3pos <- subset(Hep.and.Cancer, subset = Gpc3 > 0)
+VlnPlot(Hep.and.Cancer.Gpc3pos, cols = c("red", "blue", "green", "black", "orange"), features = c("Gpc3", "Afp", "Rb1", "Hnf4a"), idents = c("Hep", "Cancer"), pt.size = 1, split.by = "new.group", group.by = "Abbreviated", log = TRUE, stack = TRUE, same.y.lims = TRUE)
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 Hep.and.Cancer.Hnf4apos <- merge(Hep.Hnf4a, y = Cancer.Hnf4a)
 table(Hep.and.Cancer.Hnf4apos@meta.data$new.group)
 
